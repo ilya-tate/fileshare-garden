@@ -1,0 +1,55 @@
+:root {
+  --main:   #282a36;
+  --main-alt:    #44475a;
+  --white:   #f8f8f2;
+  --blue:      #6272a4;
+  --cyan:         #8be9fd;
+  --green:        #50fa7b;
+  --orange:       #ffb86c;
+  --pink:         #ff79c6;
+  --purple:       #bd93f9;
+  --red:          #ff5555;
+  --yellow:       #f1fa8c;
+}
+
+body {
+  margin: 0;
+  background-color: var(--main);
+  font-family: "Fira Code", monospace;
+}
+
+header {
+  text-align: center;
+  color: color
+}
+
+header h1 {
+  display: inline-block;
+  margin: 0;
+  padding: .5rem 1.5rem;
+  border-radius: 0 0 1rem 1rem;
+  background-color: var(--main-alt);
+  color: var(--white);
+}
+
+main {
+  padding: 3rem 5rem;
+}
+
+#devices {
+  box-sizing: border-box;
+  height: 75vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 3rem;
+  border: 1px solid var(--blue);
+  border-radius: 3rem;
+}
+
+.device {
+  padding: 1rem 1rem;
+  gap: 1rem;
+  border: 1px solid var(--purple);
+}
