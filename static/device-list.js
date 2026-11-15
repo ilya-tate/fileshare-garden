@@ -54,5 +54,3 @@ export const init = () => {
   // Start on first page
   cyclePage(0);
 };
-
-init();
