@@ -64,7 +64,8 @@ main {
 #devices {
   display: grid;
   flex: none;
-  grid-template-columns: repeat(3, minmax(0, 20dvh));
+  /* --columns is set in devices.js: half of MAX_DEVICES */
+  grid-template-columns: repeat(var(--columns), minmax(0, 20dvh));
   /* fixed rows so a short last page lines up */
   grid-template-rows: repeat(2, minmax(0, 20dvh));
   justify-content: center;
@@ -193,7 +194,8 @@ main {
 
   #devices {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(5, 3rem);
+    /* 2 columns here, so --columns (half a page) is the number of rows */
+    grid-template-rows: repeat(var(--columns), 3rem);
   }
 
   .device {
@@ -211,8 +213,10 @@ main {
     font-size: 0.75rem;
   }
 
+  /* Centred between the last row and the arrows: the 1rem on top matches
+     the 1rem of main's 5rem bottom padding left above the 4rem-tall arrows */
   #search {
-    margin-bottom: 1rem;
+    margin: 1rem 0 auto;
   }
 
   /* Arrows centred in each side, page count in between */
