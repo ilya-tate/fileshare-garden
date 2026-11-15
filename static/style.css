@@ -77,22 +77,16 @@ main {
 
 .device {
   display: grid;
+  place-content: center;
   aspect-ratio: 1;
+  padding: 1rem;
   border-radius: 50%;
   background-color: var(--purple);
+  cursor: pointer;
 }
 
 .device:hover {
   background-color: var(--pink);
-}
-
-/* The link fills the whole bubble, so a click anywhere on it opens the link */
-.device a {
-  display: grid;
-  place-content: center;
-  padding: 1rem;
-  border-radius: inherit; /* the corners outside the circle stay unclickable */
-  text-decoration: none;
 }
 
 .device p {
@@ -202,16 +196,14 @@ main {
     grid-template-rows: repeat(var(--columns), 3rem);
   }
 
+  /* All words on one line */
   .device {
-    aspect-ratio: auto;
-    border-radius: 1rem;
-  }
-
-  .device a {
     display: flex;
     align-items: center;
     gap: 1ch;
+    aspect-ratio: auto;
     padding: 0 0.5rem;
+    border-radius: 1rem;
   }
 
   .device p {
