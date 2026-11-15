@@ -14,17 +14,15 @@ clients = {}
 app = FastAPI(title="Fileshare Garden Backend API", version="0.0.1")
 
 def prune_dead_clients():
-    toPrune = []
-    for clientId in clients:
-        client = clients[clientId]
+    to_prune = []
+    for client_id in clients:
+        client = clients[client_id]
         cur_time = time.time()
         elapsed = cur_time - client.last_ping_time
         if (elapsed > DEAD_TIME_S):
-            toPrune.append(clientId)
-        else:
-            clients[clientId].last_ping_time = cur_time
+            to_prune.append(client_id)
 
-    for id in toPrune:
+    for id in to_prune:
         del clients[id]
 
 class ClientId(BaseModel):
@@ -132,6 +130,7 @@ async def ping_endpoint(client: Annotated[ClientId, Depends()]) -> PingResponse:
         return PingResponse(status=ResponseStatus.DEAD)
 
     # Else, it's here!
+    clients[client.id].last_ping_time = time.time()
     return PingResponse(status=ResponseStatus.ALIVE)
 
 @app.get("/try-send")
