@@ -11,30 +11,21 @@ const assignId = async () => {
   myDeviceIdElement.textContent = myDeviceId;
 };
 
-async function updateDeviceList() {
-  const response = await fetch("/all-clients");
-  const json = await response.json();
-  const devices = json.clients;
-
-  const deviceIds = devices.map((device) => device.id);
-
-  updateDeviceListUi(deviceIds);
-}
-
+let userIds = [];
 const refreshLoop = async () => {
   setInterval(async () => {
     // Reassign invalid IDs
     if ((await api.sendPing(myDeviceId)) !== "ALIVE") {
       await assignId();
     }
-    updateDeviceList();
+    userIds = await api.getUserIds();
+    updateDeviceListUi(userIds);
   }, 1000);
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
   await assignId();
   initDeviceList();
-  updateDeviceList();
   refreshLoop();
 });
 
