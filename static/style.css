@@ -77,19 +77,21 @@ main {
 
 .device {
   display: grid;
-  place-items: center;
   aspect-ratio: 1;
-  padding: 1rem;
   border-radius: 50%;
   background-color: var(--purple);
-  cursor: pointer;
 }
 
 .device:hover {
   background-color: var(--pink);
 }
 
+/* The link fills the whole bubble, so a click anywhere on it opens the link */
 .device a {
+  display: grid;
+  place-content: center;
+  padding: 1rem;
+  border-radius: inherit; /* the corners outside the circle stay unclickable */
   text-decoration: none;
 }
 
@@ -202,13 +204,14 @@ main {
 
   .device {
     aspect-ratio: auto;
-    padding: 0 0.5rem;
     border-radius: 1rem;
   }
 
   .device a {
     display: flex;
+    align-items: center;
     gap: 1ch;
+    padding: 0 0.5rem;
   }
 
   .device p {
