@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      button[aria-pressed="true"] {
+        background-color: rgb(150, 150, 150);
+      }
+    </style>
     <script src="test.js" defer></script>
     <title>Test Page</title>
   </head>
   <body>
     <button id="add-client">Add Client</button>
-    <button id="ping-clients">Ping Clients</button>
+    <button id="ping-clients">Trigger Client Ping</button>
+    <button id="auto-ping" aria-pressed="false">Automatically Ping Clients</button>
     <div id="send-file-div">
       <label for="sender-id">Sender:</label>
       <input id="sender-id" type="text" />

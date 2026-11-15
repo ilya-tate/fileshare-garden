@@ -4,10 +4,11 @@ let clients = [];
 
 const addClientBtn = document.getElementById("add-client");
 const pingClientsBtn = document.getElementById("ping-clients");
+const autoPingBtn = document.getElementById("auto-ping");
 const clientListDiv = document.getElementById("client-list");
 
 async function pingClient(id) {
-  const resp = await fetch(`/ping?id=${id}`);
+  const resp = await fetch(`/ping?clientId=${id}`);
   const json = await resp.json();
   return json;
 }
@@ -32,14 +33,34 @@ async function updateClientListUi() {
   }
 }
 
+async function pingAllClients() {
+  for (const client of clients) {
+    const pingResp = await pingClient(client.id);
+    console.log(pingResp);
+  }
+}
+
 addClientBtn.addEventListener("click", () => {
   fetch("/register");
 });
 
 pingClientsBtn.addEventListener("click", async () => {
-  for (const client of clients) {
-    const pingResp = await pingClient(client.id);
-    console.log(pingResp);
+  pingAllClients();
+});
+
+let intervalId = null;
+autoPingBtn.addEventListener("click", async () => {
+  if (autoPingBtn.getAttribute("aria-pressed") === "true") {
+    autoPingBtn.setAttribute("aria-pressed", false);
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  } else {
+    autoPingBtn.setAttribute("aria-pressed", true);
+    intervalId = setInterval(async () => {
+      pingAllClients();
+    }, 1000);
   }
 });
 
@@ -56,8 +77,8 @@ sendFileBtn.addEventListener("click", async () => {
   const senderId = senderIdInput.value;
   const receiverId = receiverIdInput.value;
 
-  fetch(`/try-send?sender=${senderId}&receiver=${receiverId}`);
-  
+  fetch(`/try-send?senderId=${senderId}&receiverId=${receiverId}`);
+
   senderIdInput.value = "";
   receiverIdInput.value = "";
 });
