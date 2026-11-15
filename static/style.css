@@ -46,24 +46,28 @@ main {
   flex-direction: column;
   min-height: 0;
   margin: 1rem 4.5rem 0;
-  padding: 4rem var(--gap) 5rem;
+  padding: 0 var(--gap) 5rem;
   border: 1px solid var(--blue);
   border-bottom: none;
   border-radius: 3rem 3rem 0 0;
 }
 
+/* Auto margins split the spare height evenly above the id, below it, and below the devices */
+#user-id {
+  margin-block: auto;
+  color: var(--white);
+  text-align: center;
+}
+
 #devices {
   display: grid;
-  flex: 1;
+  flex: none;
   grid-template-columns: repeat(3, minmax(0, 28dvh));
-  grid-template-rows: repeat(
-    2,
-    minmax(0, 28dvh)
-  ); /* fixed rows so a short last page lines up */
+  /* fixed rows so a short last page lines up */
+  grid-template-rows: repeat(2, minmax(0, 28dvh));
   justify-content: center;
-  align-content: safe center;
   gap: var(--gap);
-  min-height: 0;
+  margin: 1rem 0 auto; /* 1rem to match main's top margin, so the id sits halfway */
 }
 
 .device {
@@ -148,7 +152,7 @@ main {
   }
 
   main {
-    margin: var(--gap) var(--gap) 0;
+    margin-inline: var(--gap);
     padding: 0 0 5rem;
     border: none;
   }
