@@ -17,12 +17,18 @@ const postReq = (endpoint, body) => {
 export const api = {
   registerUser: async () => req("/register"),
 
-  getUsers: async (id, loc) => {
-    const res = postReq("/ping", { id, loc });
+  getUserIds: async () => {
+    const res = await req("/all-clients");
+    return res.clients.map((client) => client.id);
+  },
 
-    if (res.status !== "alive") {
-      throw new Error("Failed to verify user as alive");
+  sendPing: async (id) => {
+    const param = new URLSearchParams({ id });
+    const res = await req(`/ping?${param}`);
+    if (res.status !== "ALIVE") {
+      throw new Error(`Ping failed, ${res.status}`);
     }
-    return res.clientList;
+
+    return res.status;
   },
 };

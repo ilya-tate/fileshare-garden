@@ -2,6 +2,7 @@ import {
   init as initDeviceList,
   updateList as updateDeviceListUi,
 } from "./devices.js";
+import { api } from "./api.js";
 
 let myDeviceId = null;
 
@@ -17,18 +18,14 @@ async function updateDeviceList() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const myDeviceIdLabel = document.getElementById("user-id");
-
-  myDeviceId = await (async function () {
-    const resp = await fetch("/register");
-    const json = await resp.json();
-    return json.id;
-  })();
-  myDeviceIdLabel.textContent = myDeviceId;
+  const myDevice = await api.registerUser();
+  myDeviceIdLabel.textContent = myDevice.id;
 
   initDeviceList();
 
   updateDeviceList();
   setInterval(async () => {
+    api.sendPing(myDevice.id);
     updateDeviceList();
   }, 1000);
 });

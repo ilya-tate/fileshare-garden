@@ -1,4 +1,5 @@
-let devices = [];
+import { api } from "./api.js";
+
 const MAX_DEVICES = 8;
 
 const devicesContainer = document.getElementById("devices");
@@ -6,8 +7,10 @@ if (!devicesContainer) throw new Error("Devices container not found");
 const pagesElement = document.getElementById("pages");
 if (!pagesElement) throw new Error("Pages element not found");
 
+let devices = [];
+let maxPage;
+
 let curPage = 0;
-const maxPage = Math.ceil(devices.length / MAX_DEVICES) - 1;
 const cyclePage = (step) => {
   // Do nothing if first or last page
   if (curPage == 0 && step == -1) return;
@@ -42,7 +45,9 @@ const cyclePage = (step) => {
   }
 };
 
-export const init = () => {
+export const init = async () => {
+  devices = await api.getUserIds();
+
   // Assign buttons to change page
   document.querySelectorAll(".arrow-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
