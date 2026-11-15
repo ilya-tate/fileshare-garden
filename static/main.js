@@ -1,3 +1,3 @@
-import { init as initDeviceList } from "./device-list.js";
+import { init as initDeviceList } from "./devices.js";
 
 initDeviceList();
