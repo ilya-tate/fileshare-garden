@@ -1,3 +1,5 @@
+// CLIENT LIST STUFF
+
 let clients = [];
 
 const addClientBtn = document.getElementById("add-client");
@@ -41,5 +43,21 @@ pingClientsBtn.addEventListener("click", async () => {
   }
 });
 
-setInterval(updateClientListInternal, 100);
-setInterval(updateClientListUi, 100);
+setInterval(updateClientListInternal, 1000);
+setInterval(updateClientListUi, 1000);
+
+// SENDING STUFF
+
+const senderIdInput = document.getElementById("sender-id");
+const receiverIdInput = document.getElementById("receiver-id");
+const sendFileBtn = document.getElementById("send-file-button");
+
+sendFileBtn.addEventListener("click", async () => {
+  const senderId = senderIdInput.value;
+  const receiverId = receiverIdInput.value;
+
+  fetch(`/try-send?sender=${senderId}&receiver=${receiverId}`);
+  
+  senderIdInput.value = "";
+  receiverIdInput.value = "";
+});

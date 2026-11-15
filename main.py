@@ -2,6 +2,8 @@ import random
 import time
 import asyncio
 from enum import Enum
+from queue import Queue
+from collections import defaultdict
 from typing import Annotated
 from pydantic import BaseModel, Field
 from fastapi import FastAPI, HTTPException, Depends, status
@@ -10,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 MAX_ID = 10000
 DEAD_TIME_S = 5 # Seconds
 clients = {}
+pending_operations = defaultdict(Queue)
 
 app = FastAPI(title="Fileshare Garden Backend API", version="0.0.1")
 
@@ -47,10 +50,6 @@ class ResponseStatus(str, Enum):
     RECEIVE = "RECEIVE"
     REJECTED = "REJECTED"
 
-class ClientStatus(str, Enum):
-    SENDING = "SENDING"
-    # TODO: KEEP WORKING
-
 class PingResponse(BaseModel):
     status: ResponseStatus = Field(examples=[
         ResponseStatus.ALIVE,
@@ -59,6 +58,11 @@ class PingResponse(BaseModel):
         ResponseStatus.RECEIVE,
         ResponseStatus.REJECTED,
     ])
+
+class OperationType(str, Enum):
+    TRY_SEND = "TRY-SEND"
+    REJECT = "REJECT"
+    ACCEPT = "ACCEPT"
 
 @app.get("/register")
 async def register_endpoint() -> ClientId:
@@ -126,11 +130,16 @@ async def ping_endpoint(client: Annotated[ClientId, Depends()]) -> PingResponse:
     """
     prune_dead_clients()
 
+    print("Pending Operations:")
+    print(pending_operations)
+
     if (client.id not in clients):
+        print(f"{client.id} is dead")
         return PingResponse(status=ResponseStatus.DEAD)
 
     # Else, it's here!
     clients[client.id].last_ping_time = time.time()
+    print(f"{client.id} is alive")
     return PingResponse(status=ResponseStatus.ALIVE)
 
 @app.get("/try-send")
@@ -147,5 +156,11 @@ async def try_send_endpoint(
     get a ping response of SEND once the receiver accepted
     their file or REJECTED once they rejected it.
     """
+    operation = {
+        "type": OperationType.TRY_SEND,
+        "sender": sender.id,
+        "receiver": receiver.id
+    }
+    pending_operations[receiver.id].put(operation)
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
