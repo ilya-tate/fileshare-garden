@@ -1,6 +1,6 @@
 import TEST_DEVICES from "./test-devices.json" with { type: "json" };
 
-const MAX_DEVICES = matchMedia("(max-width: 768px)").matches ? 10 : 6;
+const MAX_DEVICES = 8;
 
 const devicesContainer = document.getElementById("devices");
 if (!devicesContainer) throw new Error("Devices container not found");
@@ -50,6 +50,9 @@ export const init = () => {
       cyclePage(Number(btn.dataset.step));
     });
   });
+
+  // Desktop shows 2 rows, so each row holds half a page
+  devicesContainer.style.setProperty("--columns", Math.ceil(MAX_DEVICES / 2));
 
   // Start on first page
   cyclePage(0);
