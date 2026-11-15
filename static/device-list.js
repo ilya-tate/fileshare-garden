@@ -1,19 +1,6 @@
+import TEST_DEVICES from "./test-devices.json" with { type: "json" };
+
 const MAX_DEVICES = matchMedia("(max-width: 768px)").matches ? 10 : 6;
-const TEST_DEVICES = [
-  "apple-banana-tree",
-  "why-not-you",
-  "get-my-free",
-  "yes-bro-no",
-  "tim-me-the",
-  "am-is-he",
-  "she-is-she",
-  "we-are-the",
-  "they-are-the",
-  "you-are-the",
-  "i-am-the",
-  "we-are-the",
-  "who-is-the",
-];
 
 const devicesContainer = document.getElementById("devices");
 if (!devicesContainer) throw new Error("Devices container not found");
