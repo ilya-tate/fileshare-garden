@@ -6,7 +6,7 @@ import { api } from "./api.js";
 
 let myDeviceId = null;
 const assignId = async () => {
-  const myDeviceId = (await api.registerUser()).id;
+  myDeviceId = (await api.registerUser()).id;
   const myDeviceIdElement = document.getElementById("user-id");
   myDeviceIdElement.textContent = myDeviceId;
 };
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setInterval(async () => {
     // Reassign invalid IDs
-    if (api.sendPing(myDeviceId) !== "ALIVE") {
+    if ((await api.sendPing(myDeviceId)) !== "ALIVE") {
       await assignId();
     }
     updateDeviceList();
