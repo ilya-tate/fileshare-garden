@@ -14,8 +14,8 @@ export const api = {
     return res.clients.map((client) => client.id);
   },
 
-  sendPing: async (id) => {
-    const param = new URLSearchParams({ id });
+  sendPing: async (clientId) => {
+    const param = new URLSearchParams({ clientId });
     const res = await req(`/ping?${param}`);
 
     return res.status;
