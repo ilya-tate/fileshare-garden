@@ -57,8 +57,10 @@ main {
 /* Auto margins split the spare height evenly above the id, below it, and below the devices */
 #user-id {
   margin-block: auto;
+  font-size: 2rem;
   color: var(--white);
   text-align: center;
+  font-weight: bold;
 }
 
 #devices {
