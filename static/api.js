@@ -6,14 +6,6 @@ const req = async (endpoint, options = {}) => {
   return res.json();
 };
 
-const postReq = (endpoint, body) => {
-  return req(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ body }),
-  });
-};
-
 export const api = {
   registerUser: async () => req("/register"),
 
