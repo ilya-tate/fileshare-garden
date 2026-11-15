@@ -1,6 +1,6 @@
 "use strict";
 
-const MAX_DEVICES = 12;
+const MAX_DEVICES = matchMedia("(max-width: 768px)").matches ? 10 : 6;
 const TEST_DEVICES = [
   "apple-banana-tree",
   "why-not-you",
@@ -19,18 +19,18 @@ const TEST_DEVICES = [
 
 const devicesContainer = document.getElementById("devices");
 if (!devicesContainer) throw new Error("Devices container not found");
-
-// Assign buttons to change page
-document.querySelectorAll(".arrow-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    cyclePage(Number(btn.dataset.step));
-  });
-});
+const pagesElement = document.getElementById("pages");
+if (!pagesElement) throw new Error("Pages element not found");
 
 let currPage = 0;
 const maxPage = Math.ceil(TEST_DEVICES.length / MAX_DEVICES) - 1;
 const cyclePage = (step) => {
+  // Do nothing if first or last page
+  if (currPage == 0 && step == -1) return;
+  if (currPage == maxPage && step == 1) return;
   currPage += step;
+
+  pagesElement.textContent = `${currPage + 1} / ${maxPage + 1}`;
 
   devicesContainer.replaceChildren();
 
@@ -58,5 +58,16 @@ const cyclePage = (step) => {
   }
 };
 
-// Start on first page
-cyclePage(0);
+const init = () => {
+  // Assign buttons to change page
+  document.querySelectorAll(".arrow-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      cyclePage(Number(btn.dataset.step));
+    });
+  });
+
+  // Start on first page
+  cyclePage(0);
+};
+
+init();
