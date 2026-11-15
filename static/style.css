@@ -16,6 +16,7 @@ body {
   margin: 0;
   background-color: var(--main);
   font-family: "Fira Code", monospace;
+  height: 100vh
 }
 
 header {
@@ -33,23 +34,62 @@ header h1 {
 }
 
 main {
-  padding: 3rem 5rem;
+  position: relative;
+  box-sizing: border-box;
+  width: fit-content;
+  margin: 1rem auto 0;
+  padding: 3rem 3rem 5rem;
+  border: 1px solid var(--blue);
+  border-radius: 3rem;
 }
 
 #devices {
   box-sizing: border-box;
   height: 75vh;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 10rem);
+  justify-content: center;
+  align-content: start;
   gap: 1rem;
-  margin: 0;
-  padding: 3rem;
-  border: 1px solid var(--blue);
-  border-radius: 3rem;
+  margin: 1rem 0 0;
 }
 
 .device {
-  padding: 1rem 1rem;
-  gap: 1rem;
+  aspect-ratio: 1/1;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background-color: var(--purple);
   border: 1px solid var(--purple);
+  border-radius: 3rem;
+  cursor: pointer;
+}
+
+.device a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--white);
+}
+
+#arrows {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 0;
+  left: .5rem;
+  right: .5rem;
+}
+
+.arrow-btn {
+  background: none;
+  border: none;
+  padding: 1rem 1rem 2vh;
+  line-height: 1;
+  color: var(--yellow);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.arrow-btn:hover {
+  color: var(--green);
 }

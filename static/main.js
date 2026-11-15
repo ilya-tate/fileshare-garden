@@ -21,13 +21,15 @@ const TEST_DEVICES = [
 const devicesContainer = document.getElementById("devices");
 if (!devicesContainer) throw new Error("Devices container not found");
 
-for (let device of TEST_DEVICES) {
+for (let i in TEST_DEVICES) {
+    if (i >= MAX_DEVICES) break;
+
     const deviceElement = document.createElement("div");
     deviceElement.className = "device";
 
     const deviceLink = document.createElement("a");
-    deviceLink.href = `https://${device}.fileshare-garden.com`;
-    deviceLink.textContent = device;
+    deviceLink.href = `https://${TEST_DEVICES[i]}.fileshare-garden.com`;
+    deviceLink.textContent = TEST_DEVICES[i].split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 
     deviceElement.appendChild(deviceLink);
     devicesContainer.appendChild(deviceElement);
