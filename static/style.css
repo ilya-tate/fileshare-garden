@@ -19,18 +19,25 @@ body {
   background-color: var(--main);
 }
 
+/* The header, arrows and page count share the same look */
+header h1,
+.arrow-btn,
+#pages {
+  font-weight: bold;
+  color: var(--white);
+  background-color: var(--main-alt);
+  opacity: 0.85;
+}
+
 header {
   text-align: center;
-  opacity: 0.85;
 }
 
 header h1 {
   display: inline-block;
   margin: 0;
   padding: 0.5rem 1.5rem;
-  color: var(--white);
   border-radius: 0 0 1rem 1rem;
-  background-color: var(--main-alt);
 }
 
 main {
@@ -49,7 +56,10 @@ main {
   display: grid;
   flex: 1;
   grid-template-columns: repeat(3, minmax(0, 28dvh));
-  grid-template-rows: repeat(2, minmax(0, 28dvh)); /* keep both rows even when the last page is short */
+  grid-template-rows: repeat(
+    2,
+    minmax(0, 28dvh)
+  ); /* fixed rows so a short last page lines up */
   justify-content: center;
   align-content: safe center;
   gap: var(--gap);
@@ -94,12 +104,8 @@ main {
   padding: 0 0.5rem;
   font-family: inherit;
   font-size: 2rem;
-  font-weight: bold;
   line-height: 1;
-  color: var(--white);
   border: none;
-  background-color: var(--main-alt);
-  opacity: 0.85;
   cursor: pointer;
   pointer-events: auto;
 }
@@ -112,18 +118,13 @@ main {
   border-radius: 1rem 0 0 1rem;
 }
 
-/* Page count: a tab at the bottom middle, like the header at the top */
 #pages {
   align-self: flex-end;
   padding: 0.5rem 1.5rem;
-  font-weight: bold;
-  color: var(--white);
   border-radius: 1rem 1rem 0 0;
-  background-color: var(--main-alt);
-  opacity: 0.85;
 }
 
-/* Only on devices with a mouse, so taps on phones don't leave it green */
+/* Mouse only, so a tap on a phone doesn't leave it green */
 @media (hover: hover) {
   .arrow-btn:hover {
     color: var(--green);
@@ -154,7 +155,7 @@ main {
 
   #devices {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(5, 3rem); /* keep all 5 rows even when the last page is short */
+    grid-template-rows: repeat(5, 3rem);
   }
 
   .device {
@@ -169,7 +170,6 @@ main {
   }
 
   .device p {
-    margin: 0;
     font-size: 0.75rem;
   }
 
@@ -190,7 +190,6 @@ main {
     transition: transform 0.1s;
   }
 
-  /* Shrink down into the screen edge while pressed */
   #arrows .arrow-btn:active {
     color: var(--green);
     transform: scale(0.9);
