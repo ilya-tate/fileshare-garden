@@ -5,6 +5,11 @@ import {
 import { api } from "./api.js";
 
 let myDeviceId = null;
+const assignId = async () => {
+  const myDeviceId = (await api.registerUser()).id;
+  const myDeviceIdElement = document.getElementById("user-id");
+  myDeviceIdElement.textContent = myDeviceId;
+};
 
 async function updateDeviceList() {
   const response = await fetch("/all-clients");
@@ -17,15 +22,15 @@ async function updateDeviceList() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const myDeviceIdLabel = document.getElementById("user-id");
-  const myDevice = await api.registerUser();
-  myDeviceIdLabel.textContent = myDevice.id;
-
+  await assignId();
   initDeviceList();
-
   updateDeviceList();
+
   setInterval(async () => {
-    api.sendPing(myDevice.id);
+    // Reassign invalid IDs
+    if (api.sendPing(myDeviceId) !== "ALIVE") {
+      await assignId;
+    }
     updateDeviceList();
   }, 1000);
 });
