@@ -64,4 +64,4 @@ export const updateList = (deviceIds) => {
   devices = deviceIds;
   cyclePage(1);
   cyclePage(-1);
-}
+};
