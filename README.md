@@ -2,6 +2,8 @@
 
 ## Testing instructions
 
+PYTHON 3.13 REQUIRED
+
 Do this once:
 
 ```
