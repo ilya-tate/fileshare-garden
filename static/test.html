@@ -1,14 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="test.js" defer></script>
     <title>Test Page</title>
-</head>
-<body>
+  </head>
+  <body>
     <button id="add-client">Add Client</button>
     <button id="ping-clients">Ping Clients</button>
+    <div id="send-file-div">
+      <label for="sender-id">Sender:</label>
+      <input id="sender-id" type="text" />
+      <label for="receiver-id">Receiver:</label>
+      <input id="receiver-id" type="text" />
+      <button id="send-file-button">Send</button>
+    </div>
     <div id="client-list"></div>
-</body>
+  </body>
 </html>
