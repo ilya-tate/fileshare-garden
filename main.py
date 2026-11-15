@@ -6,7 +6,7 @@ from queue import Queue
 from collections import defaultdict
 from typing import Annotated
 from pydantic import BaseModel, Field
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, Query, status
 from fastapi.staticfiles import StaticFiles
 
 MAX_ID = 10000
@@ -28,8 +28,10 @@ def prune_dead_clients():
     for id in to_prune:
         del clients[id]
 
-class ClientId(BaseModel):
-    id: str = Field(examples=["26391", "blue-dinosaur"])
+ClientId = Annotated[
+    str,
+    Field(examples=["26391", "blue-dinosaur"], description="Unique device identifier")
+]
 
 class Location(BaseModel):
     latitude: float = Field(examples=[33.418091])
@@ -79,7 +81,7 @@ async def register_endpoint() -> ClientId:
                 location=None,
                 last_ping_time=time.time()
             )
-            return ClientId(id=cur_id)
+            return ClientId(cur_id)
 
     raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -95,7 +97,7 @@ async def all_clients_endpoint() -> ClientList:
     return ClientList(clients=list(clients.values()))
 
 @app.get("/clients-at")
-async def clients_at_endpoint(client: Annotated[ClientId, Depends()]) -> ClientList:
+async def clients_at_endpoint(clientId: Annotated[ClientId, Query()]) -> ClientList:
     """
     Get a list of clients close to the location associated with your ID
 
@@ -104,7 +106,7 @@ async def clients_at_endpoint(client: Annotated[ClientId, Depends()]) -> ClientL
     return ClientList(clients=[])
 
 @app.get("/client-exists")
-async def client_exists_endpoint(client: Annotated[ClientId, Depends()]) -> bool:
+async def client_exists_endpoint(clientId: Annotated[ClientId, Query()]) -> bool:
     """
     Check if a client with a certain ID exists
 
@@ -113,7 +115,7 @@ async def client_exists_endpoint(client: Annotated[ClientId, Depends()]) -> bool
     return False
 
 @app.get("/ping")
-async def ping_endpoint(client: Annotated[ClientId, Depends()]) -> PingResponse:
+async def ping_endpoint(clientId: Annotated[ClientId, Query()]) -> PingResponse:
     """
     Tell the server you're alive and get updates on what to do.
 
@@ -130,22 +132,17 @@ async def ping_endpoint(client: Annotated[ClientId, Depends()]) -> PingResponse:
     """
     prune_dead_clients()
 
-    print("Pending Operations:")
-    print(pending_operations)
-
-    if (client.id not in clients):
-        print(f"{client.id} is dead")
+    if (clientId not in clients):
         return PingResponse(status=ResponseStatus.DEAD)
 
     # Else, it's here!
-    clients[client.id].last_ping_time = time.time()
-    print(f"{client.id} is alive")
+    clients[clientId].last_ping_time = time.time()
     return PingResponse(status=ResponseStatus.ALIVE)
 
 @app.get("/try-send")
 async def try_send_endpoint(
-    sender: Annotated[ClientId, Depends()],
-    receiver: Annotated[ClientId, Depends()]
+    senderId: Annotated[ClientId, Query()],
+    receiverId: Annotated[ClientId, Query()]
 ) -> None:
     """
     Attempt to start a file send from `sender` to `receiver`. 
@@ -158,9 +155,9 @@ async def try_send_endpoint(
     """
     operation = {
         "type": OperationType.TRY_SEND,
-        "sender": sender.id,
-        "receiver": receiver.id
+        "sender": senderId,
+        "receiver": receiverId
     }
-    pending_operations[receiver.id].put(operation)
+    pending_operations[receiverId].put(operation)
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

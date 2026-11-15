@@ -28,5 +28,3 @@ document.addEventListener("DOMContentLoaded", async () => {
   initDeviceList();
   refreshLoop();
 });
-
-document.addEventListener("visibilitychange", async () => refreshLoop());
