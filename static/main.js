@@ -6,7 +6,7 @@ import { api } from "./api.js";
 
 let myDeviceId = null;
 const assignId = async () => {
-  myDeviceId = (await api.registerUser()).id;
+  myDeviceId = await api.registerUser();
   const myDeviceIdElement = document.getElementById("user-id");
   myDeviceIdElement.textContent = myDeviceId;
 };
