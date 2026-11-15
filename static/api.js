@@ -17,9 +17,6 @@ export const api = {
   sendPing: async (id) => {
     const param = new URLSearchParams({ id });
     const res = await req(`/ping?${param}`);
-    if (res.status !== "ALIVE") {
-      throw new Error(`Ping failed, ${res.status}`);
-    }
 
     return res.status;
   },

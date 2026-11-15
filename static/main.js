@@ -11,15 +11,19 @@ const assignId = async () => {
   myDeviceIdElement.textContent = myDeviceId;
 };
 
-async function updateDeviceList() {
-  const response = await fetch("/all-clients");
-  const json = await response.json();
-  const devices = json.clients;
+const updateDeviceList = async () => {
+  try {
+    const response = await fetch("/all-clients");
+    const json = await response.json();
+    const devices = json.clients;
 
-  const deviceIds = devices.map((device) => device.id);
+    const deviceIds = devices.map((device) => device.id);
 
-  updateDeviceListUi(deviceIds);
-}
+    updateDeviceListUi(deviceIds);
+  } catch (e) {
+    alert(e);
+  }
+};
 
 const refreshLoop = async () => {
   setInterval(async () => {
@@ -37,5 +41,3 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateDeviceList();
   refreshLoop();
 });
-
-document.addEventListener("visibilitychange", async () => refreshLoop());
