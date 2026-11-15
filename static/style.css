@@ -19,10 +19,12 @@ body {
   background-color: var(--main);
 }
 
-/* The header, arrows and page count share the same look */
+/* The header, arrows, page count and search share the same look */
 header h1,
 .arrow-btn,
-#pages {
+#pages,
+#search input,
+#search button {
   font-weight: bold;
   color: var(--white);
   background-color: var(--main-alt);
@@ -62,9 +64,9 @@ main {
 #devices {
   display: grid;
   flex: none;
-  grid-template-columns: repeat(3, minmax(0, 28dvh));
+  grid-template-columns: repeat(3, minmax(0, 20dvh));
   /* fixed rows so a short last page lines up */
-  grid-template-rows: repeat(2, minmax(0, 28dvh));
+  grid-template-rows: repeat(2, minmax(0, 20dvh));
   justify-content: center;
   gap: var(--gap);
   margin: 1rem 0 auto; /* 1rem to match main's top margin, so the id sits halfway */
@@ -128,9 +130,41 @@ main {
   border-radius: 1rem 1rem 0 0;
 }
 
+/* Search: the input and button join into one rounded bar */
+#search {
+  display: flex;
+  justify-content: center;
+}
+
+#search input,
+#search button {
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  border: none;
+}
+
+#search input {
+  width: 20ch;
+  min-width: 0; /* lets it shrink on narrow phones */
+  border-radius: 1rem 0 0 1rem;
+  outline: none; /* no focus ring when clicked; the text cursor shows it's active */
+}
+
+#search input::placeholder {
+  color: var(--white);
+  opacity: 0.5;
+}
+
+#search button {
+  border-radius: 0 1rem 1rem 0;
+  cursor: pointer;
+}
+
 /* Mouse only, so a tap on a phone doesn't leave it green */
 @media (hover: hover) {
-  .arrow-btn:hover {
+  .arrow-btn:hover,
+  #search button:hover {
     color: var(--green);
   }
 }
@@ -175,6 +209,10 @@ main {
 
   .device p {
     font-size: 0.75rem;
+  }
+
+  #search {
+    margin-bottom: 1rem;
   }
 
   /* Arrows centred in each side, page count in between */
