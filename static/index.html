@@ -1,28 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fileshare Garden</title>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fileshare Garden</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Fileshare Garden</h1>
+    </header>
 
-  <link rel="stylesheet" href="./style.css">
+    <main>
+      <div id="devices"></div>
+      <div id="arrows">
+        <button class="arrow-btn" data-step="-1">&lt;-</button>
+        <button class="arrow-btn" data-step="1">-&gt;</button>
+      </div>
+    </main>
 
-</head>
-<body>
-
-  <header>
-    <h1>Fileshare Garden</h1>
-  </header>
-
-  <main>
-    <div id="devices"></div>
-    <div id="arrows">
-      <button class="arrow-btn" data-step="-1">&lt;-</button>
-      <button class="arrow-btn" data-step="1">-&gt;</button>
-    </div>
-  </main>
-
-  <script type="module" src="./main.js"></script>
-</body>
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>
