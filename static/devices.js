@@ -26,19 +26,16 @@ const cyclePage = (step) => {
     const deviceElement = document.createElement("div");
     deviceElement.className = "device";
 
-    // TODO: Replace this with adding a callback on each device.
-    //       The callback should check try to send a file to it.
-    //
-    // Create link for each device
-    const deviceLink = document.createElement("a");
-    deviceElement.appendChild(deviceLink);
-    deviceLink.href = `https://${devices[i]}.fileshare-garden.com`;
+    // Create link on each device
+    deviceElement.addEventListener("onclick", () => {
+      location.href = `https://${devices[i]}.fileshare-garden.com`;
+    });
 
     // Create p for all word in each device
     for (const word of devices[i].split("-")) {
       const wordElement = document.createElement("p");
       wordElement.textContent = word.charAt(0).toUpperCase() + word.slice(1);
-      deviceLink.appendChild(wordElement);
+      deviceElement.appendChild(wordElement);
     }
 
     devicesContainer.appendChild(deviceElement);
@@ -62,6 +59,6 @@ export const init = () => {
 
 export const updateList = (deviceIds) => {
   devices = deviceIds;
-  cyclePage(1);
-  cyclePage(-1);
+  maxPage = Math.ceil(devices.length / MAX_DEVICES) - 1;
+  cyclePage(0);
 };
