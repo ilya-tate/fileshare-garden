@@ -21,11 +21,7 @@ async function updateDeviceList() {
   updateDeviceListUi(deviceIds);
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await assignId();
-  initDeviceList();
-  updateDeviceList();
-
+const refreshLoop = async () => {
   setInterval(async () => {
     // Reassign invalid IDs
     if ((await api.sendPing(myDeviceId)) !== "ALIVE") {
@@ -33,4 +29,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     updateDeviceList();
   }, 1000);
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await assignId();
+  initDeviceList();
+  updateDeviceList();
+  refreshLoop();
 });
+
+document.addEventListener("visibilitychange", async () => refreshLoop());
