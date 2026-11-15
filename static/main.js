@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setInterval(async () => {
     // Reassign invalid IDs
     if (api.sendPing(myDeviceId) !== "ALIVE") {
-      await assignId;
+      await assignId();
     }
     updateDeviceList();
   }, 1000);
