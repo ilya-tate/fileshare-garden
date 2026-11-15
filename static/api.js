@@ -20,4 +20,9 @@ export const api = {
 
     return res.status;
   },
+
+  trySendFile: async (senderId, receiverId) => {
+    const params = new URLSearchParams({ senderId, receiverId });
+    await req(`/try-send?${params}`);
+  },
 };
