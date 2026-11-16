@@ -1,5 +1,4 @@
 import { api } from "./api.js";
-import { openPopup } from "./popup.js";
 
 const MAX_DEVICES = 8;
 
@@ -7,8 +6,6 @@ const devicesContainer = document.getElementById("devices");
 if (!devicesContainer) throw new Error("Devices container not found");
 const pagesElement = document.getElementById("pages");
 if (!pagesElement) throw new Error("Pages element not found");
-const filePicker = document.getElementById("file-picker");
-if (!filePicker) throw new Error("File picker not found");
 
 let devices = [];
 let maxPage = 0;
@@ -30,42 +27,18 @@ const cyclePage = (step) => {
   devicesContainer.replaceChildren();
 
   const firstDevice = curPage * MAX_DEVICES;
-  const lastDevice = Math.min(firstDevice + MAX_DEVICES, devices.length);
+  const lastDevice = firstDevice + MAX_DEVICES;
+  for (const device of devices.slice(firstDevice, lastDevice)) {
+    const deviceDiv = document.createElement("div");
+    deviceDiv.className = "device";
+    const deviceText = document.createElement("p");
+    deviceText.textContent = device;
+    deviceDiv.appendChild(deviceText);
 
-  for (let i = firstDevice; i < lastDevice; i++) {
-    const deviceElement = document.createElement("div");
-    deviceElement.className = "device";
-
-    // Create p for all word in each device
-    for (const word of devices[i].split("-")) {
-      const wordElement = document.createElement("p");
-      wordElement.textContent = word.charAt(0).toUpperCase() + word.slice(1);
-      deviceElement.appendChild(wordElement);
-    }
-
-    const receiver = devices[i];
     // Pick file to be sent to clicked on device
-    deviceElement.addEventListener("click", () => {
-      filePicker.onchange = async () => {
-        const file = filePicker.files[0];
-        if (!file) return; // picker was cancelled
+    deviceDiv.addEventListener("click", api.trySendFile(getClientId(), device));
 
-        try {
-          await api.trySendFile(getClientId(), receiver);
-          openPopup(
-            "File sent",
-            `Waiting for ${receiver} to accept ${file.name}`,
-          );
-        } catch {
-          openPopup("File failed to send", `${receiver} couldn't be reached`);
-        } finally {
-          filePicker.value = ""; // so picking the same file again still works
-        }
-      };
-      filePicker.click();
-    });
-
-    devicesContainer.appendChild(deviceElement);
+    devicesContainer.appendChild(deviceDiv);
   }
 };
 

@@ -1,3 +1,5 @@
+import { openPopup } from "./popup.js";
+
 const req = async (endpoint, options = {}) => {
   const res = await fetch(endpoint, options);
   if (!res.ok) {
@@ -23,6 +25,27 @@ export const api = {
 
   trySendFile: async (senderId, receiverId) => {
     const params = new URLSearchParams({ senderId, receiverId });
-    await req(`/try-send?${params}`);
+
+    const filePicker = document.createElement("input");
+    filePicker.type = "file";
+
+    filePicker.onchange = async () => {
+      const file = filePicker.files[0]; // One file only
+      if (!file) return; // File manager closed
+
+      try {
+        const res = await req(`/try-send?${params}`);
+        openPopup(
+          "File sent",
+          `Waiting for ${receiverId} to accept ${file.name}`,
+        );
+      } catch {
+        openPopup("File send failed", `Could not reach ${receiverId}`);
+      } finally {
+        filePicker.remove();
+      }
+    };
+
+    filePicker.click(); // Open file picker
   },
 };
