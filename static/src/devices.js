@@ -36,7 +36,9 @@ const cyclePage = (step) => {
     deviceDiv.appendChild(deviceText);
 
     // Pick file to be sent to clicked on device
-    deviceDiv.addEventListener("click", api.trySendFile(getClientId(), device));
+    deviceDiv.addEventListener("click", () =>
+      api.trySendFile(getClientId(), device),
+    );
 
     devicesContainer.appendChild(deviceDiv);
   }

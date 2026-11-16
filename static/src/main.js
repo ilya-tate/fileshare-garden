@@ -27,4 +27,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   await assignId();
   initDeviceList();
   refreshLoop();
+
+  const searchForm = document.getElementById("search");
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Stop page from reloading
+    const searchQuery = searchForm.elements.id.value.trim();
+    api.trySendFile(myDeviceId, searchQuery);
+  });
 });
