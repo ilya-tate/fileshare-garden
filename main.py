@@ -112,7 +112,7 @@ async def client_exists_endpoint(clientId: Annotated[ClientId, Query()]) -> bool
 
     TODO: Implement
     """
-    return False
+    return clientId in clients
 
 @app.get("/ping")
 async def ping_endpoint(clientId: Annotated[ClientId, Query()]) -> PingResponse:

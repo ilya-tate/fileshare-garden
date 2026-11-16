@@ -34,7 +34,16 @@ export const api = {
       if (!file) return; // File manager closed
 
       try {
-        const res = await req(`/try-send?${params}`);
+        const clientExists = await req(
+          `/client-exists?${new URLSearchParams({ clientId: receiverId })}`,
+        );
+
+        if (!clientExists) {
+          openPopup("File send failed", "User does not exist");
+          return;
+        }
+
+        await req(`/try-send?${params}`);
         openPopup(
           "File sent",
           `Waiting for ${receiverId} to accept ${file.name}`,
