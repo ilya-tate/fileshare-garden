@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { api } from "../static/api.js";
+import { api } from "../static/src/api.js";
 
 // Fake fetch: records each request and replies with whatever the test sets up
 let requests;
@@ -92,14 +92,20 @@ describe("request errors", () => {
     it(`rejects on ${status}, naming the endpoint and status`, async () => {
       respondWith({ detail: "nope" }, status);
 
-      await assert.rejects(api.registerUser(), new RegExp(`/register.*${status}`));
+      await assert.rejects(
+        api.registerUser(),
+        new RegExp(`/register.*${status}`),
+      );
     });
   }
 
   it("rejects with fetch's own error when the network fails", async () => {
     failNetwork();
 
-    await assert.rejects(api.registerUser(), { name: "TypeError", message: "fetch failed" });
+    await assert.rejects(api.registerUser(), {
+      name: "TypeError",
+      message: "fetch failed",
+    });
   });
 
   it("rejects when the response isn't valid JSON", async () => {
@@ -153,7 +159,10 @@ describe("getUsers", () => {
 
     await sendPing();
 
-    assert.equal(requests[0].options.headers["Content-Type"], "application/json");
+    assert.equal(
+      requests[0].options.headers["Content-Type"],
+      "application/json",
+    );
   });
 
   it("sends exactly { id, loc } as the body, not wrapped in another object", async () => {
@@ -161,13 +170,22 @@ describe("getUsers", () => {
 
     await sendPing();
 
-    assert.deepEqual(JSON.parse(requests[0].options.body), { id: "abc123", loc });
+    assert.deepEqual(JSON.parse(requests[0].options.body), {
+      id: "abc123",
+      loc,
+    });
   });
 
   it("resolves to the client list when the server says alive", async () => {
-    respondWith({ status: "alive", clientList: ["why-not-you", "get-my-free"] });
+    respondWith({
+      status: "alive",
+      clientList: ["why-not-you", "get-my-free"],
+    });
 
-    assert.deepEqual(await api.getUsers("abc123", loc), ["why-not-you", "get-my-free"]);
+    assert.deepEqual(await api.getUsers("abc123", loc), [
+      "why-not-you",
+      "get-my-free",
+    ]);
   });
 
   it("resolves to an empty list when no one else is online", async () => {
@@ -197,7 +215,10 @@ describe("getUsers", () => {
   it("rejects with fetch's own error when the network fails", async () => {
     failNetwork();
 
-    await assert.rejects(api.getUsers("abc123", loc), { name: "TypeError", message: "fetch failed" });
+    await assert.rejects(api.getUsers("abc123", loc), {
+      name: "TypeError",
+      message: "fetch failed",
+    });
   });
 
   it("reports errors through the returned promise, not by throwing straight away", async () => {
